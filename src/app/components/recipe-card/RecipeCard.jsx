@@ -17,7 +17,7 @@ function RecipeCard({ recipe }) {
                 onLoad={() => setIsLoading(false)}
                 onError={() => setIsLoading(false)}
             />
-            {recipe.label}
+            {recipe.title}
                 {/* <p className="text-sm text-gray-600 border-2 border-gray-500 max-h-16 overflow-y-scroll mt-auto" data-testid="recipe-ingredients">
                     <span className="font-semibold">Ingredients:{" "}</span>
                     {recipe.recipe.ingredients.map((ingredient, index) => (
