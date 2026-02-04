@@ -1,7 +1,6 @@
 import axios from "axios";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { setKeyWord, showKeywordError } from "../slices/search/search_slice";
-//import { showRecipeError } from "../slices/recipes/recipes_slice";
 
 export const fetchRecipesByKeyword = createAsyncThunk(
   "search/fetchRecipesByKeyword",
@@ -13,7 +12,7 @@ export const fetchRecipesByKeyword = createAsyncThunk(
       const resultsPerPage = 20;
       let apiUrl = nextPageUrl
         ? nextPageUrl
-        : `https://api.spoonacular.com/recipes/complexSearch?query=${encodeURIComponent(keyword)}&number=${resultsPerPage}`;
+        : `https://api.spoonacular.com/recipes/complexSearch?query=${encodeURIComponent(keyword)}&includeIngredients=${encodeURIComponent(ingredients)}&fillIngredients=true&number=${resultsPerPage}`;
       let newNextPageUrl = null;
 
       if (cachedKey) {
@@ -23,33 +22,21 @@ export const fetchRecipesByKeyword = createAsyncThunk(
         return { hits, nextPageUrl: cachedNextPageUrl };
       }
 
-      // do {
       const response = await axios.get(apiUrl, { params: { apiKey: appKey } });
-      const hits = response.data.results;
+      let hits = response.data;
       newNextPageUrl = response.data;
 
-      const totalPages = Math.floor(newNextPageUrl.totalResults / resultsPerPage);
+      const totalPages = Math.floor(hits.totalResults / resultsPerPage);
 
-      console.log(totalPages);
+      if (ingredients && ingredients.length > 0) {
 
-      // if (ingredients && ingredients.length > 0) {
-      //   hits = hits.filter((hit) =>
-      //     ingredients.every((ingredient) =>
-      //       hit.recipe.ingredientLines.some((line) =>
-      //         line.toLowerCase().includes(ingredient.toLowerCase()),
-      //       ),
-      //     ),
-      //   );
-      // }
-
-      // } while (allHits < hitLength && newNextPageUrl);
-
-      // localStorage.setItem(uniqueCacheKey, JSON.stringify({ hits: hitsToReturn, nextPageUrl: newNextPageUrl }));
+        // work on an algorithm that helps filter ingredients by "original name"
+        hits = hits.filter((hit) => console.log(hit));
+      }
 
       dispatch(setKeyWord(keyword));
-console.log(hits);
-      //  return { hits: hitsToReturn, nextPageUrl: newNextPageUrl };
-      return hits;
+
+      return hits.results;
     } catch (error) {
       if (error.response && error.response.status === 429) {
         console.warn("Rate limit exceeded, retrying after 2 seconds...");
