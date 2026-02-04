@@ -14,7 +14,7 @@ const recipesSlice = createSlice({
     reducers: {
         clearRecipes: (state) => {
             state.recipes = [];
-            state.showRecipeError = "";
+            state.recipeError = "";
         },
         showRecipeError: (state, action) => {
             state.recipeError = action.payload;
@@ -24,21 +24,21 @@ const recipesSlice = createSlice({
         builder
             .addCase(fetchRecipesByKeyword.pending, (state) => {
                 state.isLoading = true;
-                state.showRecipeError = "";
+                state.recipeError = "";
             })
             .addCase(fetchRecipesByKeyword.fulfilled, (state, action) => {
-                state.recipes = action.payload.hits;
-                state.nextPageUrl = action.payload.nextPageUrl;
+                state.recipes = action.payload;
+               // state.nextPageUrl = action.payload.nextPageUrl;
                 state.isLoading = false;
-                state.showRecipeError = state.recipes.length === 0 ? "No recipes found" : "";
+                state.recipeError = state.recipes.length === 0 ? "No recipes found" : "";
             })
             .addCase(fetchRecipesByKeyword.rejected, (state, action) => {
                 state.isLoading = false;
-                state.showRecipeError = action.error.message || "Failed to fetch recipes";
+                state.recipeError = action.error.message || "Failed to fetch recipes";
             });
     }
 });
 
-export const { clearRecipes, showRecipeError } = recipesSlice.actions;
+export const { clearRecipes, recipeError } = recipesSlice.actions;
 
 export default recipesSlice.reducer;
