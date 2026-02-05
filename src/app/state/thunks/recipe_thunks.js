@@ -27,16 +27,18 @@ export const fetchRecipesByKeyword = createAsyncThunk(
       newNextPageUrl = response.data;
 
       const totalPages = Math.floor(hits.totalResults / resultsPerPage);
-
+      let ingredientsInRecipe;
       if (ingredients && ingredients.length > 0) {
-
-        // work on an algorithm that helps filter ingredients by "original name"
-        hits = hits.filter((hit) => console.log(hit));
+        ingredientsInRecipe = hits.results.map(
+          (hit) => hit.usedIngredients.map(ingredient => ingredient.original)
+        );
       }
 
-      dispatch(setKeyWord(keyword));
+      const results = hits.results;
 
-      return hits.results;
+      dispatch(setKeyWord(keyword));
+console.log(results);
+      return results;
     } catch (error) {
       if (error.response && error.response.status === 429) {
         console.warn("Rate limit exceeded, retrying after 2 seconds...");
