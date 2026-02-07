@@ -128,9 +128,9 @@ export default function SearchPage() {
         data-testid="search-page"
         className="bg-gray-300 h-full p-4 max-w-md mx-auto"
       >
-        <div className="flex items-center justify-center">
-          <img src={logo} width={50} />
-          <h1 className="text-2xl font-bold mb-4" data-testid="title">
+        <div className="flex items-center justify-center p-4 mb-4 rounded">
+          <img src={logo} className="mb-2 w-12" />
+          <h1 className="text-sm md:text-2xl font-bold mb-4" data-testid="title">
             What's for grub?
           </h1>
         </div>
