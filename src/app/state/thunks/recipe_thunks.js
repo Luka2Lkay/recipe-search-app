@@ -8,36 +8,36 @@ export const fetchRecipesByKeyword = createAsyncThunk(
     try {
       const appKey = import.meta.env.VITE_SPOONACULAR_APP_KEY;
       const uniqueCacheKey = `recipes_${keyword}_${ingredients ? ingredients.join(",") : ""}_${nextPageUrl || "first"}`;
-      const cachedKey = localStorage.getItem(uniqueCacheKey);
       const resultsPerPage = 20;
+
+      const cachedData = localStorage.getItem(uniqueCacheKey);
+
+      if (cachedData) {
+        try {
+          const results = JSON.parse(cachedData);
+          console.log("Returning cached results for:", uniqueCacheKey);
+          dispatch(setKeyWord(keyword));
+          return results;
+        } catch (parseError) {
+          console.warn("Failed to parse cached data, fetching fresh data");
+          localStorage.removeItem(uniqueCacheKey);
+        }
+      }
+
       let apiUrl = nextPageUrl
         ? nextPageUrl
         : `https://api.spoonacular.com/recipes/complexSearch?query=${encodeURIComponent(keyword)}&includeIngredients=${encodeURIComponent(ingredients)}&fillIngredients=true&number=${resultsPerPage}`;
-      let newNextPageUrl = null;
-
-      if (cachedKey) {
-        const { hits, nextPageUrl: cachedNextPageUrl } = JSON.parse(cachedKey);
-
-        dispatch(setKeyWord(keyword));
-        return { hits, nextPageUrl: cachedNextPageUrl };
-      }
 
       const response = await axios.get(apiUrl, { params: { apiKey: appKey } });
-      let hits = response.data;
-      newNextPageUrl = response.data;
-
-      const totalPages = Math.floor(hits.totalResults / resultsPerPage);
-      let ingredientsInRecipe;
-      if (ingredients && ingredients.length > 0) {
-        ingredientsInRecipe = hits.results.map(
-          (hit) => hit.usedIngredients.map(ingredient => ingredient.original)
-        );
-      }
+      const hits = response.data;
 
       const results = hits.results;
 
+      localStorage.setItem(uniqueCacheKey, JSON.stringify(results));
+
       dispatch(setKeyWord(keyword));
-console.log(results);
+      console.log("Fresh results fetched and cached:", results);
+    
       return results;
     } catch (error) {
       if (error.response && error.response.status === 429) {
