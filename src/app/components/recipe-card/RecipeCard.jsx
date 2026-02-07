@@ -28,7 +28,7 @@ function RecipeCard({ recipe }) {
       />
       {recipe.title}
 
-<div className="border-2 border-gray-500 max-w-full min-h-16 leading-relaxed break-words ellipse mt-auto">
+<div className="border-t-2 border-gray-500 max-w-full min-h-16 leading-relaxed break-words ellipse mt-auto">
       <p
         className="text-sm text-gray-600"
         data-testid="recipe-ingredients"
