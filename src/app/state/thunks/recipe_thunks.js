@@ -4,10 +4,10 @@ import { setKeyWord, showKeywordError } from "../slices/search/search_slice";
 
 export const fetchRecipesByKeyword = createAsyncThunk(
   "search/fetchRecipesByKeyword",
-  async ({ keyword, ingredients, page = 1, offset = 0 }, { dispatch }) => {
+  async ({ keyword, ingredients, offset = 0 }, { dispatch }) => {
     try {
       const appKey = import.meta.env.VITE_SPOONACULAR_APP_KEY;
-      const uniqueCacheKey = `recipes_${keyword}_${ingredients ? ingredients.join(",") : ""}_${page || "first"}`;
+      const uniqueCacheKey = `recipes_${keyword}_${ingredients ? ingredients.join(",") : ""}_${offset || "first"}`;
       const resultsPerPage = 10;
 
       const cachedData = localStorage.getItem(uniqueCacheKey);

@@ -41,13 +41,12 @@ export default function SearchPage() {
   const isLoading = useSelector((state) => state.recipes.isLoading);
   const recipeError = useSelector((state) => state.recipes.recipeError);
 
-  const [page, setPage] = useState(1);
   const [isOpen, setIsOpen] = useState(false);
 
   const dispatch = useDispatch();
 
   const ITEMS_PER_PAGE = 10;
-  const totalPages = Math.ceil(totalResults / ITEMS_PER_PAGE);
+
 
   const {
     handleChange: handleKeywordChange,
@@ -211,8 +210,8 @@ export default function SearchPage() {
           <RecipeList recipeList={recipeList} notFound={recipeError} />
           {recipeList.length > 0 && (
             <Pagination
-              page={page}
               offset={offset}
+              totalResults={totalResults}
               itemsPerPage={ITEMS_PER_PAGE}
               handleNextPage={handleNextPage}
               handlePreviousPage={handlePreviousPage}
