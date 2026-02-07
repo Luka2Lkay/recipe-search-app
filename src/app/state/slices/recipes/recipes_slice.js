@@ -3,9 +3,10 @@ import { fetchRecipesByKeyword } from "../../thunks/recipe_thunks";
 
 const initialState = {
     recipes: [],
-    nextPageUrl: null,
     recipeError: "",
     isLoading: false,
+    offset: 0,
+    totalResults: 0
 };
 
 const recipesSlice = createSlice({
@@ -18,7 +19,10 @@ const recipesSlice = createSlice({
         },
         showRecipeError: (state, action) => {
             state.recipeError = action.payload;
-        }
+        },
+        setOffset: (state, action) => {
+            state.offset = action.payload;
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -30,6 +34,7 @@ const recipesSlice = createSlice({
                 state.recipes = action.payload;
                 state.isLoading = false;
                 state.recipeError = state.recipes.length === 0 ? "No recipes found" : "";
+                state.totalResults = action.payload[1]?.totalResults || 0;
             })
             .addCase(fetchRecipesByKeyword.rejected, (state, action) => {
                 state.isLoading = false;
@@ -38,6 +43,6 @@ const recipesSlice = createSlice({
     }
 });
 
-export const { clearRecipes, recipeError } = recipesSlice.actions;
+export const { clearRecipes, setOffset, showRecipeError } = recipesSlice.actions;
 
 export default recipesSlice.reducer;
