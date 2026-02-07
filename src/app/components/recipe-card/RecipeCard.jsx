@@ -25,19 +25,20 @@ function RecipeCard({ recipe }) {
       />
       {recipe.title}
 
+<div className="border-2 border-gray-500 min-h-16 leading-tight mt-auto">
       <p
-        className="text-sm text-gray-600 border-2 border-gray-500 max-h-16 overflow-y-scroll mt-auto"
+        className="text-sm text-gray-600"
         data-testid="recipe-ingredients"
       >
         <span className="font-semibold">Ingredients: </span>
-
-        {recipe.usedIngredients.map((ingredient, index) => (
+            <br/>
+        {recipe.usedIngredients.map((ingredient) => (
           <span key={uuidv4()} className="text-sm">
             {ingredient.original}
-            {/* {index < recipe.recipe.ingredients.length - 1 && ", "} */}
           </span>
         ))}
       </p>
+      </div>
     </div>
   );
 }
