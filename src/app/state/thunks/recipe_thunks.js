@@ -15,6 +15,7 @@ export const fetchRecipesByKeyword = createAsyncThunk(
       if (cachedData) {
         try {
           const results = JSON.parse(cachedData);
+          console.log("Using cached data:", results);
           dispatch(setKeyWord(keyword));
           return results;
         } catch (parseError) {

@@ -1,9 +1,12 @@
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import CircularProgress from "@mui/material/CircularProgress";
+import Button from "../button/Button";
 
 function RecipeCard({ recipe }) {
   const [isLoading, setIsLoading] = useState(true);
+
+  const moreInfoUrl = `https://spoonacular.com/recipes/${recipe.title.replace(/\s+/g, "-").toLowerCase()}-${recipe.id}`;  
 
   return (
     <div
@@ -25,7 +28,7 @@ function RecipeCard({ recipe }) {
       />
       {recipe.title}
 
-<div className="border-2 border-gray-500 min-h-16 leading-tight mt-auto">
+<div className="border-2 border-gray-500 max-w-full min-h-16 leading-relaxed break-words ellipse mt-auto">
       <p
         className="text-sm text-gray-600"
         data-testid="recipe-ingredients"
@@ -33,13 +36,18 @@ function RecipeCard({ recipe }) {
         <span className="font-semibold">Ingredients: </span>
             <br/>
         {recipe.usedIngredients.map((ingredient) => (
-          <span key={uuidv4()} className="text-sm">
-            {ingredient.original}
+          <span key={uuidv4()} className="text-sm text-left">
+            {`${ingredient.original} `}
           </span>
         ))}
       </p>
       </div>
+     <div className="flex justify-center mt-2">
+       <Button
+        classes="mt-2 max-w-16 p-2 text-sm"
+        onButtonClick={() => window.open(moreInfoUrl, "_blank")}>More</Button>
     </div>
+     </div>
   );
 }
 
