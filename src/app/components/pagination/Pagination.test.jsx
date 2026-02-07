@@ -14,7 +14,7 @@ describe("Pagination component", () => {
     const { rerender: newRerender } = render(
       <Pagination
         page={3}
-        nextPageUrl={"mock-url"}
+        totalPages={5}
         handleNextPage={handleNextPageMock}
         hasPreviousPage={hasPreviousPageMock}
         handlePreviousPage={handlePreviousPageMock}
@@ -28,18 +28,18 @@ describe("Pagination component", () => {
   });
 
   it("should render Previous and Next buttons", () => {
-    expect(screen.getByText("Previous")).toBeInTheDocument();
-    expect(screen.getByText("Next")).toBeInTheDocument();
+    expect(screen.getByText("PREV")).toBeInTheDocument();
+    expect(screen.getByText("NEXT")).toBeInTheDocument();
   });
   it("should call handleNextPage when Next button is clicked", async () => {
-    const nextButton = screen.getByText("Next");
+    const nextButton = screen.getByText("NEXT");
     await userEvent.click(nextButton);
 
     expect(handleNextPageMock).toHaveBeenCalled();
   });
 
   it("should call handlePreviousPage when Previous button is clicked", async () => {
-    const previousButton = screen.getByText("Previous");
+    const previousButton = screen.getByText("PREV");
     await userEvent.click(previousButton);
     expect(handlePreviousPageMock).toHaveBeenCalled();
   });

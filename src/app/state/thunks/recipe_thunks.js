@@ -4,11 +4,11 @@ import { setKeyWord, showKeywordError } from "../slices/search/search_slice";
 
 export const fetchRecipesByKeyword = createAsyncThunk(
   "search/fetchRecipesByKeyword",
-  async ({ keyword, ingredients, nextPageUrl = null }, { dispatch }) => {
+  async ({ keyword, ingredients, page = 1, offset = 0 }, { dispatch }) => {
     try {
       const appKey = import.meta.env.VITE_SPOONACULAR_APP_KEY;
-      const uniqueCacheKey = `recipes_${keyword}_${ingredients ? ingredients.join(",") : ""}_${nextPageUrl || "first"}`;
-      const resultsPerPage = 20;
+      const uniqueCacheKey = `recipes_${keyword}_${ingredients ? ingredients.join(",") : ""}_${page || "first"}`;
+      const resultsPerPage = 10;
 
       const cachedData = localStorage.getItem(uniqueCacheKey);
 
@@ -24,14 +24,17 @@ export const fetchRecipesByKeyword = createAsyncThunk(
         }
       }
 
-      let apiUrl = nextPageUrl
-        ? nextPageUrl
-        : `https://api.spoonacular.com/recipes/complexSearch?query=${encodeURIComponent(keyword)}&includeIngredients=${encodeURIComponent(ingredients)}&fillIngredients=true&number=${resultsPerPage}`;
+      let apiUrl = `https://api.spoonacular.com/recipes/complexSearch?query=${encodeURIComponent(keyword)}&includeIngredients=${encodeURIComponent(ingredients)}&fillIngredients=true&number=${resultsPerPage}&offset=${offset}`;
 
       const response = await axios.get(apiUrl, { params: { apiKey: appKey } });
       const hits = response.data;
 
-      const results = hits.results;
+      const results = [
+        hits.results,
+        { totalResults: hits.totalResults },
+        { offset: hits.offset },
+        { number: hits.number },
+      ];
 
       localStorage.setItem(uniqueCacheKey, JSON.stringify(results));
 

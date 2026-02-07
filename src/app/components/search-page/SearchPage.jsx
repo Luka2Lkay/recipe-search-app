@@ -30,7 +30,7 @@ export default function SearchPage() {
     (state) => state.ingredients.ingredientError
   );
   const recipeList = useSelector((state) => state.recipes.recipes);
-  const nextPageUrl = useSelector((state) => state.recipes.nextPageUrl);
+  const totalPages = useSelector((state) => state.recipes.totalPages);
   const isLoading = useSelector((state) => state.recipes.isLoading);
   const recipeError = useSelector((state) => state.recipes.recipeError);
   const [page, setPage] = useState(1);
@@ -79,17 +79,18 @@ export default function SearchPage() {
   const handleClearIngredients = () => setIsOpen(true);
 
   const handleNextPage = () => {
-
-    if (nextPageUrl) {
-      dispatch(fetchRecipesByKeyword({ keyword, ingredients, nextPageUrl }));
-      setPage(page + 1);
+    if (page < totalPages) {
+      const nextPage = page + 1;
+      dispatch(fetchRecipesByKeyword({ keyword, ingredients, page: nextPage }));
+      setPage(nextPage);
     }
   }
 
   const handlePreviousPage = () => {
     if (page > 1) {
-      setPage(page - 1);
-      dispatch(fetchRecipesByKeyword({ keyword, ingredients, nextPageUrl: null }));
+      const prevPage = page - 1;
+      setPage(prevPage);
+      dispatch(fetchRecipesByKeyword({ keyword, ingredients, page: prevPage }));
     }
   }
 
@@ -115,7 +116,7 @@ export default function SearchPage() {
     ) {
 
       dispatch(clearRecipes());
-      await dispatch(fetchRecipesByKeyword({ keyword, ingredients, nextPageUrl }));
+      await dispatch(fetchRecipesByKeyword({ keyword, ingredients, page: 1 }));
       dispatch(showKeywordError(""));
       dispatch(showIngredientError(""));
       dispatch(setNewIngredient(""));
@@ -193,7 +194,7 @@ export default function SearchPage() {
         <div className="mt-4 border-t pt-4 border-gray-300">
           <RecipeList recipeList={recipeList} notFound={recipeError} />
           {recipeList.length > 0 && (
-            <Pagination page={page} nextPageUrl={nextPageUrl} handleNextPage={handleNextPage} hasPreviousPage={page > 1} handlePreviousPage={handlePreviousPage} />
+            <Pagination page={page} totalPages={totalPages} handleNextPage={handleNextPage} hasPreviousPage={page > 1} handlePreviousPage={handlePreviousPage} />
           )}
         </div>
       }

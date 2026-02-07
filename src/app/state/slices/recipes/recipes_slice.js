@@ -28,7 +28,6 @@ const recipesSlice = createSlice({
             })
             .addCase(fetchRecipesByKeyword.fulfilled, (state, action) => {
                 state.recipes = action.payload;
-               // state.nextPageUrl = action.payload.nextPageUrl;
                 state.isLoading = false;
                 state.recipeError = state.recipes.length === 0 ? "No recipes found" : "";
             })
