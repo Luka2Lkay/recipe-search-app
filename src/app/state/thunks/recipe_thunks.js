@@ -15,7 +15,6 @@ export const fetchRecipesByKeyword = createAsyncThunk(
       if (cachedData) {
         try {
           const results = JSON.parse(cachedData);
-          console.log("Returning cached results for:", uniqueCacheKey);
           dispatch(setKeyWord(keyword));
           return results;
         } catch (parseError) {
@@ -36,8 +35,6 @@ export const fetchRecipesByKeyword = createAsyncThunk(
       localStorage.setItem(uniqueCacheKey, JSON.stringify(results));
 
       dispatch(setKeyWord(keyword));
-      console.log("Fresh results fetched and cached:", results);
-    
       return results;
     } catch (error) {
       if (error.response && error.response.status === 429) {
