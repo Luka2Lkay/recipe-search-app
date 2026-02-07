@@ -10,7 +10,7 @@ function RecipeList({ recipeList, notFound }) {
         <div>
           {" "}
           <h2 className="text-xl font-bold mb-2">Recipes Found:</h2>
-          <div className="mt-4 grid grid-cols-5 gap-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 sm:grid-cols-2">
+          <div className="mt-4 grid grid-cols-1 gap-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 sm:grid-cols-2">
             {recipeList.length > 0 &&
               recipeList.map((recipe) => (
                 <div key={recipe.id}>

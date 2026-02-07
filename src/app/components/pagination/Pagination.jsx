@@ -10,16 +10,16 @@ export default function Pagination({ nextPageUrl, handleNextPage, handlePrevious
                 classes={`px-4 py-2 rounded ${!hasPreviousPage ? "bg-gray-300 cursor-not-allowed" : "bg-blue-500 text-white"}`}
                 disabled={!hasPreviousPage}
             >
-                Previous
+                PREV
             </Button>
             <span className="text-lg font-bold">Page {page}</span>
 
             <Button
                 onButtonClick={handleNextPage}
-                classes={`p-2 rounded ${!nextPageUrl ? "bg-gray-300 cursor-not-allowed" : "bg-blue-500 text-white"}`}
+                classes={`px-4 py-2 min-w-16 rounded ${!nextPageUrl ? "bg-gray-300 cursor-not-allowed" : "bg-blue-500 text-white"}`}
                 disabled={!nextPageUrl}
             >
-                Next
+                NEXT
             </Button>
         </div>
     );
