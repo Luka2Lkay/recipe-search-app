@@ -25,7 +25,7 @@ import {
   setOffset,
 } from "../../state/slices/recipes/recipes_slice.js";
 import CircularProgress from "@mui/material/CircularProgress";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function SearchPage() {
   const keyword = useSelector((state) => state.search.keyword);
@@ -47,6 +47,11 @@ export default function SearchPage() {
 
   const ITEMS_PER_PAGE = 10;
 
+  useEffect(() => {
+    if (keyword && ingredients.length > 0 && offset > 0) {
+      dispatch(fetchRecipesByKeyword({ keyword, ingredients, offset }));
+    }
+  }, [offset, keyword, ingredients, dispatch]);
 
   const {
     handleChange: handleKeywordChange,
@@ -89,13 +94,12 @@ export default function SearchPage() {
   const handleNextPage = () => {
     if (offset + ITEMS_PER_PAGE < totalResults) {
       dispatch(setOffset(offset + ITEMS_PER_PAGE));
-      console.log("Next page offset:", offset + ITEMS_PER_PAGE);
     }
   };
+
   const handlePreviousPage = () => {
     if (offset - ITEMS_PER_PAGE >= 0) {
       dispatch(setOffset(offset - ITEMS_PER_PAGE));
-      console.log("Previous page offset:", offset - ITEMS_PER_PAGE);
     }
   };
 
@@ -120,7 +124,8 @@ export default function SearchPage() {
       ingredients.length > 0
     ) {
       dispatch(clearRecipes());
-      await dispatch(fetchRecipesByKeyword({ keyword, ingredients, page: 1 }));
+      dispatch(setOffset(0));
+      dispatch(fetchRecipesByKeyword({ keyword, ingredients, offset: 0 }));
       dispatch(showKeywordError(""));
       dispatch(showIngredientError(""));
       dispatch(setNewIngredient(""));

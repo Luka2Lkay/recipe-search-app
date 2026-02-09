@@ -7,20 +7,25 @@ export const fetchRecipesByKeyword = createAsyncThunk(
   async ({ keyword, ingredients, offset = 0 }, { dispatch }) => {
     try {
       const appKey = import.meta.env.VITE_SPOONACULAR_APP_KEY;
-      const uniqueCacheKey = `recipes_${keyword}_${ingredients ? ingredients.join(",") : ""}_${offset || "first"}`;
       const resultsPerPage = 10;
+      const pageNumber = Math.floor(offset / resultsPerPage);
 
-      const cachedData = localStorage.getItem(uniqueCacheKey);
+      const sortedIngredients = ingredients && ingredients.length > 0 
+        ? ingredients.slice().sort().join(",") 
+        : "";
+      
+      const cacheKey = `recipes_${keyword}_${sortedIngredients}_page_${pageNumber}`;
+
+      const cachedData = localStorage.getItem(cacheKey);
 
       if (cachedData) {
         try {
           const results = JSON.parse(cachedData);
-          console.log("Using cached data:", results);
           dispatch(setKeyWord(keyword));
           return results;
         } catch (parseError) {
           console.warn("Failed to parse cached data, fetching fresh data");
-          localStorage.removeItem(uniqueCacheKey);
+          localStorage.removeItem(cacheKey);
         }
       }
 
@@ -36,7 +41,7 @@ export const fetchRecipesByKeyword = createAsyncThunk(
         { number: hits.number },
       ];
 
-      localStorage.setItem(uniqueCacheKey, JSON.stringify(results));
+      localStorage.setItem(cacheKey, JSON.stringify(results));
 
       dispatch(setKeyWord(keyword));
       return results;
