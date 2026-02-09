@@ -10,7 +10,7 @@
 
 ## Link to live deployment
 
-
+https://recipe-search-app-teal.vercel.app/
 
 ## How to Use the App
 
