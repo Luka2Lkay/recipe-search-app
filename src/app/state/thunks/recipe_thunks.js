@@ -22,7 +22,6 @@ export const fetchRecipesByKeyword = createAsyncThunk(
         try {
           const results = JSON.parse(cachedData);
           dispatch(setKeyWord(keyword));
-          console.log(results);
           return results;
         } catch (parseError) {
           console.warn("Failed to parse cached data, fetching fresh data");
