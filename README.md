@@ -1,4 +1,4 @@
-### How to Run the App
+## How to Run the App
 
 - Open the terminal and run **npm install** inside the project root directory.
 - Create a profile at https://spoonacular.com/food-api and get an API key 
@@ -7,6 +7,10 @@
 **VITE_SPOONACULAR_APP_KEY= your API KEY**<br/>
 
 - Execute **npm run dev** and click on the link to open the app in the browser.
+
+## Link to live deployment
+
+
 
 ## How to Use the App
 

@@ -14,7 +14,7 @@ export const fetchRecipesByKeyword = createAsyncThunk(
         ? ingredients.slice().sort().join(",") 
         : "";
       
-      const cacheKey = `recipes_${keyword}_${sortedIngredients}_page_${pageNumber}`;
+      const cacheKey = `recipes_${keyword.toLowerCase()}_${sortedIngredients.toLowerCase()}_page_${pageNumber}`;
 
       const cachedData = localStorage.getItem(cacheKey);
 
@@ -22,6 +22,7 @@ export const fetchRecipesByKeyword = createAsyncThunk(
         try {
           const results = JSON.parse(cachedData);
           dispatch(setKeyWord(keyword));
+          console.log(results);
           return results;
         } catch (parseError) {
           console.warn("Failed to parse cached data, fetching fresh data");
