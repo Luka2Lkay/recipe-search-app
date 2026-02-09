@@ -1,8 +1,7 @@
 import RecipeCard from "../recipe-card/RecipeCard";
 
 function RecipeList({ recipeList, notFound }) {
-  // Support both shapes: either a flat array of recipes, or the thunk-style
-  // payload where recipes are at recipeList[0]. Normalize to `recipes`.
+
   const recipes = Array.isArray(recipeList) &&
     recipeList.length > 0 &&
     Array.isArray(recipeList[0])

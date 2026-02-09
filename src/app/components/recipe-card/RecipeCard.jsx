@@ -15,7 +15,7 @@ function RecipeCard({ recipe }) {
       className="mb-1 flex flex-col h-full border-2 border-gray-500 p-2 rounded shadow hover:shadow-lg transition-shadow duration-300"
     >
       {isLoading && <CircularProgress className="mt-4" role="progressbar" />}
-      <h3 className="font-bold text-xl leading-tight text-gray-900 truncate">
+      <h3 data-testid="recipe-title" className="font-bold text-xl leading-tight text-gray-900 truncate">
         {recipe.title}
       </h3>
       <img

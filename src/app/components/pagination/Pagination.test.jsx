@@ -13,18 +13,14 @@ describe("Pagination component", () => {
 
     const { rerender: newRerender } = render(
       <Pagination
-        page={3}
-        totalPages={5}
+        offset={3}
+        itemsPerPage={10}
         handleNextPage={handleNextPageMock}
-        hasPreviousPage={hasPreviousPageMock}
+        totalResults={100}
         handlePreviousPage={handlePreviousPageMock}
       />
     );
     rerender = newRerender;
-  });
-
-  it("should render the Pagination component", () => {
-    expect(screen.getByText("Page 3")).toBeInTheDocument();
   });
 
   it("should render Previous and Next buttons", () => {

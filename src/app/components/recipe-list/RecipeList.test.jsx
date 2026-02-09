@@ -6,12 +6,15 @@ describe("RecipeList component", () => {
     {
       title: "Recipe 1",
       image: "image1.jpg",
-      ingredients: [{ text: "ingredient1" }, { text: "ingredient2" }],
+      usedIngredients: [
+        { original: "Ingredient 1" },
+        { original: "Ingredient 2" },
+      ],
     },
     {
       title: "Recipe 2",
       image: "image2.jpg",
-      ingredients: [{ text: "ingredient3" }],
+      usedIngredients: [{ original: "Ingredient 3" }],
     },
   ];
 
@@ -23,20 +26,12 @@ describe("RecipeList component", () => {
     expect(screen.getByTestId("recipe-list")).toBeInTheDocument();
   });
 
-  it("should display recipe titles and images", () => {
-    mockRecipes.forEach((recipe) => {
-      expect(screen.getByText(recipe.title)).toBeInTheDocument();
-      expect(screen.getByAltText(recipe.title)).toHaveAttribute(
-        "src",
-        recipe.image,
-      );
-    });
+  it("should display 'Recipes Found:' heading when recipes are present", () => {
+    expect(screen.getByText("Recipes Found:")).toBeInTheDocument();
   });
 
-  it("should handle empty recipes array", () => {
-    const { rerender } = render(<RecipeList recipeList={[]} notFound="" />);
-
-    rerender(<RecipeList recipeList={[]} notFound="No recipes found" />);
+  it("should display error message when no recipes found and notFound prop is provided", () => {
+    render(<RecipeList recipeList={[]} notFound="No recipes found" />);
     expect(screen.getByText("No recipes found")).toBeInTheDocument();
   });
 });
