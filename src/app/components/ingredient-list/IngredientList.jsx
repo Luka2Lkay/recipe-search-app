@@ -1,13 +1,17 @@
 import { CiCircleRemove } from "react-icons/ci";
-import { v4 as uuidv4 } from "uuid";
 import Button from "../button/Button";
+import { useEffect } from "react";
 
 export default function IngredientList({
   ingredients,
   handleRemoveIngredient,
   handleClearIngredients,
-  keyword
+  keyword,
 }) {
+  useEffect(() => {
+    console.log("Ingredients updated:", ingredients);
+  }, [ingredients]);
+
   return (
     <div className="border-2">
       <h2
@@ -17,21 +21,25 @@ export default function IngredientList({
         Ingredients for "{keyword}":
       </h2>
       <ul className="space-y-2" data-testid="ingredient-list">
-        {ingredients.map((ingredient) => (
-          <li key={uuidv4()} className="inline-flex items-center p-2">
-            <Button classes="text-base cursor-text px-1 py-1">
-              <span className="flex gap-2">
-                {ingredient}
-                <CiCircleRemove
-                  onClick={() => handleRemoveIngredient(ingredient)}
-                  className="text-2xl text-red-500 cursor-pointer"
-                  style={{ strokeWidth: "0.5", stroke: "currentColor" }}
-                  data-testid="remove-ingredient-button"
-                />
-              </span>
-            </Button>
-          </li>
-        ))}
+        {ingredients.length > 0 ? (
+          ingredients.map((ingredient) => (
+            <li key={ingredient} className="inline-flex items-center p-2">
+              <Button classes="text-base cursor-text px-1 py-1">
+                <span className="flex gap-2">
+                  {ingredient}
+                  <CiCircleRemove
+                    onClick={() => handleRemoveIngredient(ingredient)}
+                    className="text-2xl text-red-500 cursor-pointer"
+                    style={{ strokeWidth: "0.5", stroke: "currentColor" }}
+                    data-testid="remove-ingredient-button"
+                  />
+                </span>
+              </Button>
+            </li>
+          ))
+        ) : (
+          <li className="text-gray-500">No ingredients to show.</li>
+        )}
       </ul>
       {ingredients.length > 1 && (
         <Button
@@ -49,6 +57,6 @@ export default function IngredientList({
           </span>
         </Button>
       )}
-    </div >
+    </div>
   );
 }

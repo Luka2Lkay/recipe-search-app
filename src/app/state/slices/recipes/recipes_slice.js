@@ -31,10 +31,11 @@ const recipesSlice = createSlice({
                 state.recipeError = "";
             })
             .addCase(fetchRecipesByKeyword.fulfilled, (state, action) => {
-                state.recipes = action.payload;
+                state.recipes = action.payload.recipes || [];
                 state.isLoading = false;
                 state.recipeError = state.recipes.length === 0 ? "No recipes found" : "";
-                state.totalResults = action.payload[1]?.totalResults || 0;
+                state.totalResults = action.payload.totalResults || 0;
+                state.offset = action.payload.offset ?? state.offset;
             })
             .addCase(fetchRecipesByKeyword.rejected, (state, action) => {
                 state.isLoading = false;

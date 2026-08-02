@@ -1,14 +1,7 @@
 import RecipeCard from "../recipe-card/RecipeCard";
 
 function RecipeList({ recipeList, notFound }) {
-
-  const recipes = Array.isArray(recipeList) &&
-    recipeList.length > 0 &&
-    Array.isArray(recipeList[0])
-    ? recipeList[0]
-    : Array.isArray(recipeList)
-    ? recipeList
-    : [];
+  const recipes = Array.isArray(recipeList) ? recipeList : [];
 
   return (
     <div data-testid="recipe-list" className="p-4">

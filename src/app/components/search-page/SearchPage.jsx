@@ -74,15 +74,14 @@ export default function SearchPage() {
     const isValidated = validateIngredient(ingredient, "Ingredient");
 
     if (ingredients.includes(ingredient)) {
-      dispatch(showIngredientError(isValidated));
+      dispatch(showIngredientError("Ingredient already added"));
       return;
     }
 
     if (isValidated) {
-      dispatch(showIngredientError(isValidated));
+      dispatch(showIngredientError(""));
       dispatch(addIngredient(ingredient));
       dispatch(setNewIngredient(""));
-      dispatch(showIngredientError(""));
     }
   };
 
@@ -181,14 +180,12 @@ export default function SearchPage() {
           </p>
         )}
 
-        {ingredients.length > 0 && (
-          <IngredientList
-            ingredients={ingredients}
-            handleRemoveIngredient={handleRemoveIngredient}
-            keyword={keyword}
-            handleClearIngredients={handleClearIngredients}
-          />
-        )}
+        <IngredientList
+          ingredients={ingredients}
+          handleRemoveIngredient={handleRemoveIngredient}
+          keyword={keyword}
+          handleClearIngredients={handleClearIngredients}
+        />
 
         <Button
           onButtonClick={handleSearch}
