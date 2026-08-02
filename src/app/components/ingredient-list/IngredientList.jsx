@@ -34,12 +34,15 @@ export default function IngredientList({
         ))}
       </ul>
       {ingredients.length > 1 && (
-        <Button classes="bg-red-500 hover:bg-red-700 py-1 px-1 flex justify-center cursor-text" data-testid="clear-all-button">
-          <span className="flex gap-2">
+        <Button
+          onButtonClick={handleClearIngredients}
+          classes="bg-red-500 hover:bg-red-700 py-1 px-1 flex justify-center"
+          data-testid="clear-all-button"
+        >
+          <span className="flex gap-2 items-center">
             Clear All
             <CiCircleRemove
-              onClick={() => handleClearIngredients()}
-              className="text-2xl text-white cursor-pointer"
+              className="text-2xl text-white"
               style={{ strokeWidth: "0.5", stroke: "currentColor" }}
               data-testid="remove-ingredient-button"
             />

@@ -74,7 +74,7 @@ export default function SearchPage() {
     const isValidated = validateIngredient(ingredient, "Ingredient");
 
     if (ingredients.includes(ingredient)) {
-      dispatch(showIngredientError("Ingredient already added"));
+      dispatch(showIngredientError(isValidated));
       return;
     }
 
@@ -104,12 +104,10 @@ export default function SearchPage() {
   };
 
   const handleSearch = async () => {
-    const isValidated = validateKeyword(keyword, "Keyword");
+    const isKeywordValid = validateKeyword(keyword, "Keyword");
 
-    if (isValidated) {
-      dispatch(showKeywordError(isValidated));
-      dispatch(setNewIngredient(""));
-      dispatch(showIngredientError(""));
+    if (!isKeywordValid) {
+      return;
     }
 
     if (ingredients.length === 0) {
@@ -117,19 +115,12 @@ export default function SearchPage() {
       return;
     }
 
-    if (
-      !keywordError &&
-      !ingredientError &&
-      keyword &&
-      ingredients.length > 0
-    ) {
-      dispatch(clearRecipes());
-      dispatch(setOffset(0));
-      dispatch(fetchRecipesByKeyword({ keyword, ingredients, offset: 0 }));
-      dispatch(showKeywordError(""));
-      dispatch(showIngredientError(""));
-      dispatch(setNewIngredient(""));
-    }
+    dispatch(clearRecipes());
+    dispatch(setOffset(0));
+    dispatch(fetchRecipesByKeyword({ keyword, ingredients, offset: 0 }));
+    dispatch(showKeywordError(""));
+    dispatch(showIngredientError(""));
+    dispatch(setNewIngredient(""));
   };
 
   return (
